@@ -1,2 +1,3 @@
 #!/usr/bin/env bash
-sh npm run build
+node node_modules/webpack/bin/webpack.js
+cp ./dist/dj-core.js /Users/wangmin/work/dex/beedn/public/static/js/.
