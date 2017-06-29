@@ -6,7 +6,7 @@ module.exports = {
   entry: "./src/index",
   output: {
     path: __dirname,
-    filename: "./dist/index.js"
+    filename: "./dist/core.js"
   },
   module: {
     loaders: [
