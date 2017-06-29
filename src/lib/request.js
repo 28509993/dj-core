@@ -51,7 +51,7 @@ function xhrRequest (url, data, opts) {
       var isComplete = false
       xhr.onreadystatechange = function (e) {
         if (xhr.readyState === 4) {
-          if (xhr.status === 200 || xhr.status === 304) {
+          if (xhr.status >= 200 && xhr.status <= 304) {
             isComplete || resolve(xhr)
           } else {
             console.log(xhr.status, url)
@@ -73,7 +73,8 @@ function xhrRequest (url, data, opts) {
       xhr.onerror = errHandler
       xhr.ontimeout = errHandler
       xhr.open(opts.method, url, true)
-      xhr.setRequestHeader('Access-Control-Allow-Headers', 'Origin,Content-Type,Accept')
+      // xhr.setRequestHeader('Access-Control-Allow-Headers', 'Origin,Content-Type,Accept')
+      // xhr.setRequestHeader('X-Request-With', null)
       if (opts.method === 'POST') {
         xhr.setRequestHeader('Content-Type', 'application/json;charset=utf-8')
       }

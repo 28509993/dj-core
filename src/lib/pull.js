@@ -27,7 +27,7 @@ const nativeList = {
 }
 import {request} from './request'
 var pull = {}
-pulll.init = function (arr) {
+pull.init = function (arr) {
   let pullAll = arr
   let pullMap = {}
   Object.keys(pullAll).forEach(function (key) {

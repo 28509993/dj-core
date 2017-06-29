@@ -103,15 +103,6 @@ import {loadInjection} from './lib/loader'
       }
     }
   })
-  if (typeof define === 'function' && typeof define.amd === 'object' && define.amd) {
-    define(function () {
-      return dangjia;
-    });
-  } else if (typeof module !== 'undefined' && module.exports) {
-    module.exports = dangjia;
-    module.exports.dangjia = dangjia;
-  } else {
-    global.dangjia = global.dj = window.dj = dangjia
-  }
-})(window || this)
+  global.dangjia = global.dj = dangjia
+})(window)
 
