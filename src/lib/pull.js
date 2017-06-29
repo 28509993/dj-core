@@ -40,5 +40,5 @@ pull.init = function (arr) {
     pull[key] = func
   })
 }
-
+pull.init (apiList)
 export default pull
