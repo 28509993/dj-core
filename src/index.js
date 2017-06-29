@@ -71,7 +71,7 @@ import {loadInjection} from './lib/loader'
     },
     'pull': {
       get: function () {
-        return pull()
+        return pull
       },
       enumerable: true
     },

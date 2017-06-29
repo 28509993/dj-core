@@ -28,8 +28,8 @@ const nativeList = {
 import {request} from './request'
 var pull = {}
 pull.init = function (arr) {
+  console.log(arr)
   let pullAll = arr
-  let pullMap = {}
   Object.keys(pullAll).forEach(function (key) {
     let item = pullAll[key]
     let req = request
@@ -37,9 +37,8 @@ pull.init = function (arr) {
     let func = function (data) {
       return req(url, data)
     }
-    pullMap[key] = func
+    pull[key] = func
   })
-  return pullMap
 }
 
 export default pull
