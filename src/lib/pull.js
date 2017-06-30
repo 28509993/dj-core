@@ -28,7 +28,6 @@ const nativeList = {
 import {request} from './request'
 var pull = {}
 pull.init = function (arr) {
-  console.log(arr)
   let pullAll = arr
   Object.keys(pullAll).forEach(function (key) {
     let item = pullAll[key]
