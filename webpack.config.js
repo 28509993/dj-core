@@ -9,6 +9,9 @@ module.exports = {
     path: __dirname,
     filename: "./dist/dj-core.js"
   },
+  externals: {
+    'Promise': 'Promise'
+  },
   module: {
     loaders: [
       {
