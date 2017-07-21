@@ -5,6 +5,20 @@
 var regNativeMap = {}
 import Promise from './promise'
 function setupWebViewJavascriptBridge (callback) {
+
+  //Android使用
+  if (window.WebViewJavascriptBridge) {
+    callback(WebViewJavascriptBridge)
+  } else {
+    document.addEventListener(
+      'WebViewJavascriptBridgeReady'
+      , function () {
+        callback(WebViewJavascriptBridge)
+      },
+      false
+    );
+  }
+  //IOS
   if (window.WebViewJavascriptBridge) {
     return callback(WebViewJavascriptBridge)
   }
