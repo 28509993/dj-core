@@ -5,3 +5,4 @@ public/
 .git/
 dist/
 npm-debug.log
+*.gz
