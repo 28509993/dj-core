@@ -4,23 +4,10 @@
 /* eslint-disable */
 var regNativeMap = {}
 import Promise from './promise'
-function setupWebViewJavascriptBridge (callback) {
 
-  //Android使用
+function setupWebViewJavascriptBridge (callback) {
   if (window.WebViewJavascriptBridge) {
-    callback(WebViewJavascriptBridge)
-  } else {
-    document.addEventListener(
-      'WebViewJavascriptBridgeReady'
-      , function () {
-        callback(WebViewJavascriptBridge)
-      },
-      false
-    );
-  }
-  //IOS
-  if (window.WebViewJavascriptBridge) {
-    return callback(WebViewJavascriptBridge)
+    return callback(window.WebViewJavascriptBridge)
   }
   if (window.WVJBCallbacks) {
     return window.WVJBCallbacks.push(callback)
@@ -46,10 +33,13 @@ var regNative = function (fName, fn) {
       bridge.registerHandler(fName, function (data, responseCallback) {
         var res = data && JSON.parse(JSON.stringify(data))
         var returns = regNativeMap[fName](res)
+        if (!(returns instanceof Promise )) {
+          returns = Promise.as(returns)
+        }
         returns.then(function (cbData) {
-          return responseCallback(cbData)
+          return responseCallback && responseCallback(cbData)
         })
-        // }
+
       })
     })
   }
@@ -61,7 +51,7 @@ setupWebViewJavascriptBridge(function (bridge) {
 var unRegNative = function (fName) {
   delete regNativeMap[fName]
 }
-var callNative = function (funcName, data, func) {
+var callNative = function (funcName, data) {
   if (!nativeBridge) return Promise.as(new Error('No Native Bridge!'))
   return new Promise(function (resolve, reject) {
     nativeBridge.callHandler(funcName, data, function responseCallback (resData) {
