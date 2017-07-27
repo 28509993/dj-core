@@ -45,9 +45,12 @@ var regNative = function (fName, fn) {
   }
 }
 var nativeBridge = null
-setupWebViewJavascriptBridge(function (bridge) {
-  nativeBridge = bridge
-})
+if (/iPhone|Android/i.test(window.navigator.userAgent)){
+  setupWebViewJavascriptBridge(function (bridge) {
+    nativeBridge = bridge
+  })
+}
+
 var unRegNative = function (fName) {
   delete regNativeMap[fName]
 }
