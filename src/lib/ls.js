@@ -21,7 +21,7 @@ LStorage.prototype.value = function (key, data) {
     data = toJSON(data)
   } else {
     if (data) {
-      data = JSON.stringify(data)
+      data = typeof data === 'string' ? data: JSON.stringify(data)
       var old = this.store().getItem(key) || '{}'
       this.store().setItem(key, data)
       if (old !== data) {

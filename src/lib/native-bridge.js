@@ -31,7 +31,11 @@ var regNative = function (fName, fn) {
     // 需要改动，目前returns只支持promise返回值
     setupWebViewJavascriptBridge(function (bridge) {
       bridge.registerHandler(fName, function (data, responseCallback) {
-        var res = data && JSON.parse(JSON.stringify(data))
+        var res = data
+        if (data) {
+          data = typeof data === 'string' ? data : JSON.stringify(data)
+          res = JSON.parse(data)
+        }
         var returns = regNativeMap[fName](res)
         if (!(returns instanceof Promise )) {
           returns = Promise.as(returns)
