@@ -2,8 +2,9 @@
  * Created by lichuanjing on 2017/6/28.
  */
 var path = require('path');
+var webpack = require('webpack');
 module.exports = {
-  devtool: '#source-map',
+  //devtool: '#source-map',
   entry: "./src/index",
   output: {
     path: __dirname,
@@ -22,5 +23,12 @@ module.exports = {
         }
       }
     ]
-  }
+  },
+  // plugins: [
+  //   new webpack.optimize.UglifyJsPlugin({
+  //     compress: {
+  //       warnings: false
+  //     }
+  //   })
+  // ]
 };

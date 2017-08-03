@@ -31,6 +31,12 @@ var regNative = function (fName, fn) {
     // 需要改动，目前returns只支持promise返回值
     setupWebViewJavascriptBridge(function (bridge) {
       bridge.registerHandler(fName, function (data, responseCallback) {
+        if (typeof data === 'string') {
+          console.log('receive from android:string:' + data)
+        } else {
+          console.log('receive from android:object:' + JSON.stringify(data))
+        }
+
         var res = data
         if (data) {
           data = typeof data === 'string' ? data : JSON.stringify(data)
