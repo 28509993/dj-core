@@ -52,7 +52,7 @@ Eventer.prototype.emit = function emit (type) {
         fn.apply(self, args)
       })
     }
-  }, 1)
+  })
   return true
 }
 Eventer.prototype.removeListener = function removeListener (type, listener) {
