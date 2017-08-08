@@ -14,6 +14,10 @@ import device from './lib/device'
 import {getParamByUrl} from './lib/utils'
 import {loadInjection} from './lib/loader'
 !(function (global) {
+  if (window.top.location!==window.location && !window.__hasFrame){
+    window.top.location.href = window.self.location.href
+  }
+
   var dangjia = new Eventer()
   Object.defineProperties(dangjia, {
     'Eventer': {
