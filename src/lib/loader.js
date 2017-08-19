@@ -103,9 +103,21 @@ function tryLoad(urlObj) {
   p = xhrRequest(urlObj.url, null, opts)
   p.then(
     function(xhr) {
-      urlObj['xhr'] = xhr
-      urlObj.loading = true
-      self.emit('next')
+      var redo =false
+      //剔除注入数据
+      if (urlObj.isJs) {
+        var jstext = xhr.responseText
+        if (jstext.length <4096 && /http[s]*:\/\/[\d.]{8,}/.test(jstext)){
+          redo = true;
+        }
+      }
+      if (redo) {
+        tryLoad(urlObj)
+      } else {
+        urlObj['xhr'] = xhr
+        urlObj.loading = true
+        self.emit('next')
+      }
     },
     function(e) {
       console.log(e)
@@ -159,6 +171,20 @@ function docReady() {
     }
   })
 }
+
+function clearMbInject() {
+  var nodes =document.body.children ||document.body.childNodes||[];
+  for (var i = 0; i < nodes.length; i++) {
+    var node = nodes[i]
+    if (/div/i.test(node.tagName) && i ===0) continue ;
+    var txt = node.outerHTML ||node.outerText || ''
+    if (/SCRIPT/i.test(node.tagName)) continue ;
+    if (/http[s]*:\/\/[\d.]{8,}/.test(txt)){
+      node.style && (node.style.display='none');
+    }
+  }
+}
+
 function loadInjection(urls, element) {
   Array.isArray(urls) || (urls = [urls])
   return docReady().then(function() {
@@ -166,6 +192,7 @@ function loadInjection(urls, element) {
       var res = new ResContext(urls, element)
       if (!urls || !urls.length) return resolve()
       res._onComplete = function() {
+        clearMbInject();
         resolve()
       }
       res._onFail = function() {
