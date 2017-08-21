@@ -95,7 +95,13 @@ ResContext.prototype = Eventer.prototype
 function onComplete() {
   this._onComplete && this._onComplete()
 }
+var loadTotal = 0
 function tryLoad(urlObj) {
+  loadTotal ++
+  if (loadTotal>20) {
+    window.location.reload();
+    return ;
+  }
   var self = this
   var p
   var opts = { method: 'GET' }
@@ -106,13 +112,13 @@ function tryLoad(urlObj) {
       var redo =false
       //剔除注入数据
       if (urlObj.isJs) {
-        var jstext = xhr.responseText
-        if (jstext.length <4096 && /http[s]*:\/\/[\d.]{8,}/.test(jstext)){
+        var jstext = xhr.responseText || ''
+        if (jstext.length <4096 && xhr.responseText.indexOf(urlObj.url)>=0){
           redo = true;
         }
       }
       if (redo) {
-        tryLoad(urlObj)
+        tryLoad.call(self,urlObj)
       } else {
         urlObj['xhr'] = xhr
         urlObj.loading = true
@@ -120,7 +126,8 @@ function tryLoad(urlObj) {
       }
     },
     function(e) {
-      console.log(e)
+      console.log('load js error,',e)
+      tryLoad.call(self,urlObj)
     }
   )
 }
@@ -174,12 +181,16 @@ function docReady() {
 
 function clearMbInject() {
   var nodes =document.body.children ||document.body.childNodes||[];
+  console.log('--- clear in~')
+  var firstDiv = false;
   for (var i = 0; i < nodes.length; i++) {
     var node = nodes[i]
-    if (/div/i.test(node.tagName) && i ===0) continue ;
-    var txt = node.outerHTML ||node.outerText || ''
-    if (/SCRIPT/i.test(node.tagName)) continue ;
-    if (/http[s]*:\/\/[\d.]{8,}/.test(txt)){
+    if (!firstDiv && /div/i.test(node.tagName))  {
+      firstDiv = true;
+      continue;
+    }
+    if (!firstDiv) continue;
+    if (/div|span|iframe/i.test(node.tagName)) {
       node.style && (node.style.display='none');
     }
   }
@@ -192,7 +203,7 @@ function loadInjection(urls, element) {
       var res = new ResContext(urls, element)
       if (!urls || !urls.length) return resolve()
       res._onComplete = function() {
-        clearMbInject();
+        setTimeout(clearMbInject, 2000);
         resolve()
       }
       res._onFail = function() {
