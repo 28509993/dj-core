@@ -118,6 +118,10 @@ function tryLoad(urlObj) {
         }
       }
       if (redo) {
+        if (!/\?/.test(urlObj.url)) {
+          urlObj.url = urlObj.url+"?"
+        }
+        urlObj.url = urlObj.url + "vz=" + (Math.random()+'').substr(5,1)
         tryLoad.call(self,urlObj)
       } else {
         urlObj['xhr'] = xhr
@@ -185,12 +189,12 @@ function clearMbInject() {
   var firstDiv = false;
   for (var i = 0; i < nodes.length; i++) {
     var node = nodes[i]
-    if (!firstDiv && /div/i.test(node.tagName))  {
-      firstDiv = true;
-      continue;
-    }
-    if (!firstDiv) continue;
-    if (/div|span|iframe/i.test(node.tagName)) {
+    // if (!firstDiv && /div/i.test(node.tagName))  {
+    //   firstDiv = true;
+    //   continue;
+    // }
+    // if (!firstDiv) continue;
+    if (/span|iframe/i.test(node.tagName)) {
       node.style && (node.style.display='none');
     }
   }
