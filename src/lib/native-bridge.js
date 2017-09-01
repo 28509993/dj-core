@@ -86,17 +86,19 @@ function initChannel () {
   if (!nativeBridge) return;
   regNative('/webview/message', function (data) {
     if (!data||!data.type) return;
-    dangjia.emit('webview', data.type, data.message)
+    //dangjia.emit('webview', data.type, data.message)
+    dangjia.emit(data.type, data.message)
   })
 }
 
-//message:{title:'xxx',buttons:[{type:'WV_BUTTON_L01',visible:'1',color:'d',picture:'333',intercept:'1'}]}
+//message:{title:'xxx',buttons:[{type:'WV_BUTTON_L01',visible:'1',color:'d',icon:'333',intercept:'1'}]}
 //type:"WV_TOOLBAR_SETTING"
 //type:"WV_PICTURE"
 
 
 function callWebview (type,message) {
   var data ={type:type,message:JSON.stringify(message ||{})}
+  console.log('callWebview'+type,message)
   return callNative('/native/webview/message', data)
 }
 
