@@ -57,7 +57,12 @@ Eventer.prototype.emit = function emit (type) {
 }
 Eventer.prototype.removeListener = function removeListener (type, listener) {
   var events = this._events
-  if (!type || typeof listener !== 'function') return this
+  if (!type) return this
+  if (listener && typeof listener !== 'function') return this
+  if (!listener) {
+    delete events[type]
+    return this;
+  }
   var list = events[type]
   if (!list) return this
   if (listener === list) {
