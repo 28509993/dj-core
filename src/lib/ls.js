@@ -3,12 +3,9 @@
  */
 /* eslint-disable */
 import {toJSON} from './utils'
-import Eventer from './eventer'
 var locUrl = window.location.href
+var dangjia = window.dangjia
 function LStorage () {
-}
-if (!window.dangjia) {
-  window.dangjia = new Eventer()
 }
 LStorage.prototype.store = function () {
   return window.localStorage

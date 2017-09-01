@@ -1,11 +1,12 @@
 /* eslint-disable */
-import Eventer from './lib/eventer'
+import './lib/dangjia'
+// import Eventer from './lib/eventer'
 import Promise from './lib/promise'
 import {request, xhrRequest} from './lib/request'
 import getQuerystring from './lib/getQuerystring'
 import ObjectID from './lib/objectid'
 import parseURL from './lib/href'
-import {regNative, callNative} from './lib/native-bridge'
+import {regNative, callNative, callWebview} from './lib/native-bridge'
 import pull from './lib/pull'
 import lStorage from './lib/ls'
 import './lib/object-extend'
@@ -17,15 +18,14 @@ import {loadInjection} from './lib/loader'
   if (window.top.location!==window.location && !window.__hasFrame){
     window.top.location.href = window.self.location.href
   }
-
-  var dangjia = new Eventer()
+  var dangjia = window.dangjia
   Object.defineProperties(dangjia, {
-    'Eventer': {
-      get: function () {
-        return Eventer
-      },
-      enumerable: true
-    },
+    // 'Eventer': {
+    //   get: function () {
+    //     return Eventer
+    //   },
+    //   enumerable: true
+    // },
     'Promise': {
       get: function () {
         return Promise
@@ -71,6 +71,11 @@ import {loadInjection} from './lib/loader'
     'callNative': {
       get: function () {
         return callNative
+      }
+    },
+    'callWebview': {
+      get: function () {
+        return callWebview
       }
     },
     'pull': {

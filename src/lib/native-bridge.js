@@ -36,7 +36,6 @@ var regNative = function (fName, fn) {
         } else {
           console.log('receive from android:object:' + JSON.stringify(data))
         }
-
         var res = data
         if (data) {
           data = typeof data === 'string' ? data : JSON.stringify(data)
@@ -49,7 +48,6 @@ var regNative = function (fName, fn) {
         returns.then(function (cbData) {
           return responseCallback && responseCallback(cbData)
         })
-
       })
     })
   }
@@ -58,6 +56,9 @@ var nativeBridge = null
 if (/iPhone|Android/i.test(window.navigator.userAgent)){
   setupWebViewJavascriptBridge(function (bridge) {
     nativeBridge = bridge
+    setTimeout(function () {
+      initChannel()
+    }, 0)
   })
 }
 
@@ -78,4 +79,25 @@ var callNative = function (funcName, data) {
     })
   })
 }
-export {regNative, unRegNative, callNative}
+//{type:WV_BUTTON_L01,.....}
+//type:WV_BUTTON_BACK WV_BUTTON_L01,WV_BUTTON_R01,WV_SEARCH_01
+var dangjia = window.dangjia
+function initChannel () {
+  if (!nativeBridge) return;
+  regNative('/webview/message', function (data) {
+    if (!data||!data.type) return;
+    dangjia.emit('webview', data.type, data.message)
+  })
+}
+
+//message:{title:'xxx',buttons:[{type:'WV_BUTTON_L01',visible:'1',color:'d',picture:'333',intercept:'1'}]}
+//type:"WV_TOOLBAR_SETTING"
+//type:"WV_PICTURE"
+
+
+function callWebview (type,message) {
+  var data ={type:type,message:JSON.stringify(message ||{})}
+  return callNative('/native/webview/message', data)
+}
+
+export {regNative, unRegNative, callNative, callWebview}
