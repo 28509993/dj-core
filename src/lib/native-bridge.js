@@ -90,17 +90,22 @@ function initChannel () {
     dangjia.emit(data.type, data.message)
   })
 }
-
-//message:{bar_type:"normal","search_hint":"hint",title:'xxx',buttons:[{type:'WV_BUTTON_L01',visible:'1',color:'d',icon:'333',intercept:'1'}]}
 //type:"WV_TOOLBAR_SETTING"
-//type:"WV_PICTURE"
+//message:{bar_type:"normal","search_hint":"hint",title:'xxx',buttons:[{type:'WV_BUTTON_L01',visible:'1',color:'d',icon:'333',intercept:'1'}]}
 //bar_type: none,normal,search
 //search_hint: 当bar_type为search的提示
 
+//type:"WV_OPEN_PAGE" {url:"/dfd/d"}
+//type:"WV_PICTURE" {url:"/dfd/d"}
+
+
 function callWebview (type,message) {
   var data ={type:type,message:JSON.stringify(message ||{})}
-  console.log('callWebview'+type,message)
   return callNative('/native/webview/message', data)
 }
 
-export {regNative, unRegNative, callNative, callWebview}
+function openWebview (url) {
+  return callWebview("WV_OPEN_PAGE",{url:url})
+}
+
+export {regNative, unRegNative, callNative, callWebview,openWebview}

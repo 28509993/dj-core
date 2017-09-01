@@ -6,7 +6,7 @@ import {request, xhrRequest} from './lib/request'
 import getQuerystring from './lib/getQuerystring'
 import ObjectID from './lib/objectid'
 import parseURL from './lib/href'
-import {regNative, callNative, callWebview} from './lib/native-bridge'
+import {regNative, callNative, callWebview, openWebview} from './lib/native-bridge'
 import pull from './lib/pull'
 import lStorage from './lib/ls'
 import './lib/object-extend'
@@ -76,6 +76,11 @@ import {loadInjection} from './lib/loader'
     'callWebview': {
       get: function () {
         return callWebview
+      }
+    },
+    'openWebview': {
+      get: function () {
+        return openWebview
       }
     },
     'pull': {
