@@ -91,10 +91,11 @@ function initChannel () {
   })
 }
 
-//message:{title:'xxx',buttons:[{type:'WV_BUTTON_L01',visible:'1',color:'d',icon:'333',intercept:'1'}]}
+//message:{bar_type:"normal","search_hint":"hint",title:'xxx',buttons:[{type:'WV_BUTTON_L01',visible:'1',color:'d',icon:'333',intercept:'1'}]}
 //type:"WV_TOOLBAR_SETTING"
 //type:"WV_PICTURE"
-
+//bar_type: none,normal,search
+//search_hint: 当bar_type为search的提示
 
 function callWebview (type,message) {
   var data ={type:type,message:JSON.stringify(message ||{})}
