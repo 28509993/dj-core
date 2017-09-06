@@ -56,6 +56,7 @@ var nativeBridge = null
 if (/iPhone|Android/i.test(window.navigator.userAgent)){
   setupWebViewJavascriptBridge(function (bridge) {
     nativeBridge = bridge
+    console.log('nativeBridge nativeBridge=true')
     setTimeout(function () {
       initChannel()
     }, 0)
@@ -65,6 +66,7 @@ if (/iPhone|Android/i.test(window.navigator.userAgent)){
 var unRegNative = function (fName) {
   delete regNativeMap[fName]
 }
+
 var callNative = function (funcName, data) {
   if (!nativeBridge) return Promise.as(new Error('No Native Bridge!'))
   return new Promise(function (resolve, reject) {
@@ -100,7 +102,7 @@ function initChannel () {
 
 
 function callWebview (type,message) {
-  var data ={type:type,message:JSON.stringify(message ||{})}
+  var data ={type:type,message:message ||{}}
   return callNative('/native/webview/message', data)
 }
 
