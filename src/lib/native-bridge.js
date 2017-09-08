@@ -103,7 +103,13 @@ function initChannel () {
 
 function callWebview (type,message) {
   var data ={type:type,message:message ||{}}
-  return callNative('/native/webview/message', data)
+  if (type === 'WV_TOOLBAR_SETTING') {
+    setTimeout(function () {
+      callNative('/native/webview/message', data)
+    }, 200)
+  } else {
+    return callNative('/native/webview/message', data)
+  }
 }
 
 function openWebview (url) {
