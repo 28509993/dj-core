@@ -16,6 +16,12 @@ function fileType(str) {
   var ext = matchs[1] || 'unknown'
   return ext
 }
+
+function getHeadDom (){
+  var heads = document.getElementsByTagName('head')
+  return heads && heads[0]
+}
+
 function defineJs(urlObj) {
   var script = document.createElement('script')
   script.type = 'text/javascript'
@@ -25,8 +31,7 @@ function defineJs(urlObj) {
     script.text = urlObj.xhr.responseText
   }
   delete urlObj.xhr
-  var element = document.getElementsByTagName('head')[0]
-  element.appendChild(script)
+  getHeadDom().appendChild(script)
   urlObj.injected = true
 }
 function defineCss(urlObj) {
@@ -38,8 +43,7 @@ function defineCss(urlObj) {
     style.styleSheet.cssText = urlObj.xhr.responseText
   }
   delete urlObj.xhr
-  var element = document.getElementsByTagName('head')[0]
-  element.appendChild(style)
+  getHeadDom().appendChild(style)
   urlObj.injected = true
 }
 function attachImg(urlObj) {
@@ -137,7 +141,7 @@ function tryLoad(urlObj) {
 }
 function onNext() {
   var self = this
-  if (!document.getElementsByTagName('head')) {
+  if (!getHeadDom()) {
     setTimeout(function(){
       self.emit('next')
     }, 50)
