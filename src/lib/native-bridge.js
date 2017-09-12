@@ -68,9 +68,16 @@ var unRegNative = function (fName) {
 }
 
 var callNative = function (funcName, data) {
-  if (!nativeBridge) return Promise.as(new Error('No Native Bridge!'))
+  if (!nativeBridge) {
+    setTimeout(function () {
+      callNative(funcName, data)
+    }, 200)
+    return Promise.as(new Error('No Native Bridge!'))
+  }
+  console.log("tonative:"+ funcName + "," + JSON.stringify(data||{}))
   return new Promise(function (resolve, reject) {
     nativeBridge.callHandler(funcName, data, function responseCallback (resData) {
+      console.log("tonativeback:" + JSON.stringify(resData||{}))
       if (!resData) {
         resData = {errcode: 9999, errdesc: 'call error !'}
       } else {
