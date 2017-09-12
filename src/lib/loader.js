@@ -136,6 +136,13 @@ function tryLoad(urlObj) {
   )
 }
 function onNext() {
+  var self = this
+  if (!document.getElementsByTagName('head')) {
+    setTimeout(function(){
+      self.emit('next')
+    }, 50)
+    return ;
+  }
   var curIndex = this.completeIndex + 1
   var urlObj = this.urls[curIndex]
   if (!urlObj || urlObj.loaded || urlObj.injected || !urlObj.xhr) return
