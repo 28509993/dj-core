@@ -66,14 +66,15 @@ if (/iPhone|Android/i.test(window.navigator.userAgent)){
 var unRegNative = function (fName) {
   delete regNativeMap[fName]
 }
-
+var bridgeTry = false
 var callNative = function (funcName, data) {
-  if (!nativeBridge) {
+  if (!nativeBridge && !bridgeTry) {
     setTimeout(function () {
+      bridgeTry = true
       callNative(funcName, data)
-    }, 200)
-    return Promise.as(new Error('No Native Bridge!'))
+    }, 300)
   }
+  if (!nativeBridge) return Promise.as(new Error('No Native Bridge!'))
   console.log("tonative:"+ funcName + "," + JSON.stringify(data||{}))
   return new Promise(function (resolve, reject) {
     nativeBridge.callHandler(funcName, data, function responseCallback (resData) {
