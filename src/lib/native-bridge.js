@@ -72,7 +72,7 @@ var callNative = function (funcName, data) {
     setTimeout(function () {
       bridgeTry = true
       callNative(funcName, data)
-    }, 300)
+    }, 500)
   }
   if (!nativeBridge) return Promise.as(new Error('No Native Bridge!'))
   console.log("tonative:"+ funcName + "," + JSON.stringify(data||{}))

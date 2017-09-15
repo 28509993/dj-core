@@ -194,31 +194,35 @@ function docReady() {
   })
 }
 
+var clearMbInjectTime = 50
 function clearMbInject() {
+  clearMbInjectTime --;
+  if (clearMbInjectTime<=0) return;
   var nodes =document.body.children ||document.body.childNodes||[];
-  console.log('--- clear in~')
-  var firstDiv = false;
   for (var i = 0; i < nodes.length; i++) {
     var node = nodes[i]
-    // if (!firstDiv && /div/i.test(node.tagName))  {
-    //   firstDiv = true;
-    //   continue;
-    // }
-    // if (!firstDiv) continue;
-    if (/span|iframe/i.test(node.tagName)) {
-      node.style && (node.style.display='none');
+    if (/div|span|iframe/i.test(node.tagName)) {
+      if (node.getAttribute("data-dj")||node.getAttribute("id")==='app'){
+
+      } else {
+        node.style && (node.style.display='none');
+      }
     }
   }
+  setTimeout(clearMbInject,100)
 }
 
+var clearMbInjectTime1 = setTimeout(clearMbInject,1000)
+
 function loadInjection(urls, element) {
+  clearTimeout(clearMbInjectTime1);
   Array.isArray(urls) || (urls = [urls])
   return docReady().then(function() {
     return new Promise(function(resolve, reject) {
       var res = new ResContext(urls, element)
       if (!urls || !urls.length) return resolve()
       res._onComplete = function() {
-        setTimeout(clearMbInject, 2000);
+        setTimeout(clearMbInject, 100);
         resolve()
       }
       res._onFail = function() {

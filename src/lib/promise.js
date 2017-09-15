@@ -2,7 +2,28 @@
  * Created by lichuanjing on 2017/6/1.
  */
 /* eslint-disable */
-import Promise from 'Promise'
+import nativePromise from 'Promise'
+import PromisePolifill from './promise-polyfill'
+
+var Promise = nativePromise
+var isSupported = Promise &&
+  'resolve' in Promise &&
+  'reject' in Promise &&
+  'all' in Promise &&
+  'race' in Promise && (function () {
+    var resolve;
+    new Promise(function (r) {
+      resolve = r;
+    });
+    return typeof resolve === 'function';
+  })();
+
+if (!isSupported){
+  Promise = PromisePolifill;
+  window['Promise'] = Promise
+}
+
+
 Promise.as = Promise.prototype.as = function (value) {
   return new Promise(function (resolve, reject) {
     setTimeout(function () {
@@ -14,7 +35,7 @@ Promise.as = Promise.prototype.as = function (value) {
     })
   })
 }
-function PromiseWrap (args) {
+function PromiseWrap(args) {
   this.args = args
 }
 PromiseWrap.prototype.then = function (resolve1, reject1) {
@@ -62,7 +83,7 @@ Promise.waterfall = Promise.prototype.waterfall = function (ps, noIgnore) {
   ps = Array.isArray(ps) ? ps : [ps]
   if (ps.length <= 0) return Promise.as()
   return new Promise(function (resolve, reject) {
-    function step (v) {
+    function step(v) {
       var fn = ps[n]
       var p = fn.call(self, v)
       p.then(function (v) {
