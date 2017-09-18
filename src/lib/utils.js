@@ -76,4 +76,12 @@ function getParamByUrl (url, name) {
   }
   return ''
 }
-export {isObject, dateConvert, getType, toJSON, stringifyPrimitive, querystring, getParamByUrl}
+function ossUrl(url) {
+  if (!url) return url
+  if (typeof url === 'string') {
+    url = url.replace(/oss-cn-hangzhou.aliyuncs.com/,'wokelink.com');
+  }
+  return url
+}
+
+export {isObject, dateConvert, getType, toJSON, stringifyPrimitive, querystring, getParamByUrl,ossUrl}

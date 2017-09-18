@@ -12,7 +12,7 @@ import lStorage from './lib/ls'
 import './lib/object-extend'
 import md5 from './lib/md5'
 import device from './lib/device'
-import {getParamByUrl} from './lib/utils'
+import {getParamByUrl,ossUrl} from './lib/utils'
 import {loadInjection} from './lib/loader'
 !(function (global) {
   if (window.top.location!==window.location && !window.__hasFrame){
@@ -115,8 +115,14 @@ import {loadInjection} from './lib/loader'
       get: function () {
         return loadInjection
       }
+    },
+    'ossUrl': {
+      get: function () {
+        return ossUrl
+      }
     }
   })
   global.dangjia = global.dj = dangjia
+  global.__djkey_ = '3djwokelike665522'
 })(window)
 
