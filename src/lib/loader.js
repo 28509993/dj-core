@@ -102,8 +102,8 @@ function onComplete() {
 var loadTotal = 0
 function tryLoad(urlObj) {
   loadTotal ++
-  if (loadTotal>20) {
-    window.location.reload();
+  if (loadTotal>30) {
+    //window.location.reload();
     return ;
   }
   var self = this
